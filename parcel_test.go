@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -47,9 +48,9 @@ func TestAddGetDelete(t *testing.T) {
 	// получите только что добавленную посылку, убедитесь в отсутствии ошибки
 	// проверьте, что значения всех полей в полученном объекте совпадают со значениями полей в переменной parcel
 	origin, err := store.Get(id)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	parcel.Number = id
-	require.Equal(t, parcel, origin)
+	assert.Equal(t, parcel, origin)
 
 	//storeParcel, err := store.Get(id)
 	//require.NoError(t, err)
@@ -60,9 +61,9 @@ func TestAddGetDelete(t *testing.T) {
 	// удалите добавленную посылку, убедитесь в отсутствии ошибки
 	// проверьте, что посылку больше нельзя получить из БД
 	err = store.Delete(id)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	_, err = store.Get(id)
-	require.Error(t, err)
+	assert.Error(t, err)
 	require.ErrorIs(t, err, sql.ErrNoRows)
 }
 
@@ -87,7 +88,8 @@ func TestSetAddress(t *testing.T) {
 	// check
 	// получите добавленную посылку и убедитесь, что адрес обновился
 	s, err := store.Get(id)
-	require.Equal(t, newAddress, s.Address)
+	assert.Equal(t, newAddress, s.Address)
+	require.NoError(t, err)
 }
 
 // TestSetStatus проверяет обновление статуса
@@ -109,7 +111,8 @@ func TestSetStatus(t *testing.T) {
 	// check
 	// получите добавленную посылку и убедитесь, что статус обновился
 	s, err := store.Get(id)
-	require.Equal(t, status, s.Status)
+	assert.Equal(t, status, s.Status)
+	require.NoError(t, err)
 }
 
 // TestGetByClient проверяет получение посылок по идентификатору клиента
@@ -148,7 +151,7 @@ func TestGetByClient(t *testing.T) {
 	// get by client
 	storedParcels, err := store.GetByClient(client)
 	require.NoError(t, err)
-	require.Equal(t, parcels, storedParcels)
+	assert.ElementsMatch(t, parcels, storedParcels)
 	// получите список посылок по идентификатору клиента, сохранённого в переменной client
 	// убедитесь в отсутствии ошибки
 	// убедитесь, что количество полученных посылок совпадает с количеством добавленных
