@@ -63,8 +63,8 @@ func TestAddGetDelete(t *testing.T) {
 	err = store.Delete(id)
 	assert.NoError(t, err)
 	_, err = store.Get(id)
-	assert.Error(t, err)
-	require.ErrorIs(t, err, sql.ErrNoRows)
+	require.Error(t, err)
+	assert.ErrorIs(t, err, sql.ErrNoRows)
 }
 
 // TestSetAddress проверяет обновление адреса
@@ -88,8 +88,8 @@ func TestSetAddress(t *testing.T) {
 	// check
 	// получите добавленную посылку и убедитесь, что адрес обновился
 	s, err := store.Get(id)
-	assert.Equal(t, newAddress, s.Address)
 	require.NoError(t, err)
+	assert.Equal(t, newAddress, s.Address)
 }
 
 // TestSetStatus проверяет обновление статуса
@@ -111,8 +111,8 @@ func TestSetStatus(t *testing.T) {
 	// check
 	// получите добавленную посылку и убедитесь, что статус обновился
 	s, err := store.Get(id)
-	assert.Equal(t, status, s.Status)
 	require.NoError(t, err)
+	assert.Equal(t, status, s.Status)
 }
 
 // TestGetByClient проверяет получение посылок по идентификатору клиента
@@ -152,7 +152,7 @@ func TestGetByClient(t *testing.T) {
 	storedParcels, err := store.GetByClient(client)
 	require.NoError(t, err)
 	assert.ElementsMatch(t, parcels, storedParcels)
-	// получите список посылок по идентификатору клиента, сохранённого в переменной client
+	/* получите список посылок по идентификатору клиента, сохранённого в переменной client
 	// убедитесь в отсутствии ошибки
 	// убедитесь, что количество полученных посылок совпадает с количеством добавленных
 
@@ -164,5 +164,5 @@ func TestGetByClient(t *testing.T) {
 		// в parcelMap лежат добавленные посылки, ключ - идентификатор посылки, значение - сама посылка
 		// убедитесь, что все посылки из storedParcels есть в parcelMap
 		// убедитесь, что значения полей полученных посылок заполнены верно
-	}
+	}*/
 }
